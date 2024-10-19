@@ -1,0 +1,108 @@
+//#CRT_SECURE_NO_WARNINGS
+#include<iostream>
+using namespace std;
+
+struct Apartament {
+	char* adresa;
+	string proprietar;
+	int nrCamere;
+	float suprafata;
+};
+
+void afisareApartament(Apartament* ap) {
+	cout << "Adresa:" << ap->adresa << endl;
+	cout << "proprietar:" << ap->proprietar << endl;
+	cout << "nrCamere:" << ap->nrCamere << endl;
+	cout << "suprafata:" << ap->suprafata << endl;
+
+}
+
+Apartament citireApartament() {
+	Apartament ap;
+	cout << "adresa:";
+	char buffer[100];
+	cin >> buffer;          //ap.adresa;// obiect normal e cu . nu sageata
+	ap.adresa = new char[strlen(buffer) + 1];
+	strcpy_s(ap.adresa, strlen(buffer) + 1, buffer);
+
+
+	cout << "proprietar" << endl;
+	cin >> ap.proprietar;
+	cout << "nr camere" << endl;
+	cin >> ap.nrCamere;
+	cout << "suprafata" << endl;
+	cin >> ap.suprafata;
+	
+
+	return ap;
+
+}
+
+
+
+int  main() {
+	Apartament ap;
+
+	ap.nrCamere = 3;
+
+	Apartament* pointer;
+
+	pointer = new Apartament();//alocam spatiul
+	pointer->nrCamere = 5;
+	pointer->proprietar = "gil";
+	pointer->adresa = new char[strlen("Bucuresti") + 1];//este pointer la char, strlen det cate caract are un sir de caractere 
+	strcpy_s(pointer->adresa, strlen("Bucuresti") + 1, "Bucuresti");
+	pointer->suprafata = 120;
+
+	afisareApartament(pointer);
+	delete pointer;
+
+
+	
+
+
+
+	//Apartament v[100];// alocare statica ,declaram u vector , in steck, nu este recomandata in main
+	int nrApartamente = 2;
+	Apartament* apartamente;
+	apartamente = new Apartament[nrApartamente];//aici avem 10 apart
+	
+	for (int i = 0; i < nrApartamente; i++) {
+		apartamente[i] = citireApartament();
+	}
+	for (int i = 0; i < nrApartamente; i++) {
+		afisareApartament(&(apartamente[i]));
+	}
+
+	for (int i = 0; i < nrApartamente; i++) {
+		delete[]apartamente[i].adresa;
+	}
+	delete[]apartamente;
+
+
+
+
+
+
+
+
+	//Apartament** pointeri;//asta este declararea 
+	//pointeri = new Apartament* [3];//aici avem 3 pointari la apart
+
+
+
+
+
+	
+
+	return 0; 
+}
+//& extrage adresa unui pointer pointer = &ap;
+//ocupa 8 octeti
+// shallow copy se copiaza adresele si nu informatia 
+//strcpy_s ii spunemcand sa se opreasca
+//strcpy o sa copieze sirul de caract chiar daca a depasit spatiul pana ajunge lam\0
+//intializare atribuim 
+//()aloc spatiu pt un sg caracter
+//[]...mai multe caractere 
+//** vector de pointer
