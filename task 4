@@ -1,0 +1,564 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+
+class Masina {
+private:
+    char* model;
+    int nrLocuri;
+    float putereMotor;
+    bool electric;
+    const int anFabricatie;
+    static int nrMasini;
+
+public:
+    Masina() :anFabricatie(2017) {
+        this->model = new char[strlen("Suzuki") + 1];
+        strcpy_s(this->model, strlen("Suzuki") + 1, "Suzuki");
+        this->nrLocuri = 0;
+        this->putereMotor = 0.0;
+        this->electric = false;
+        nrMasini++;
+    }
+
+    Masina(const char* model, int nrLocuri, float putereMotor, bool electric, int an) : anFabricatie(an) {
+        this->model = new char[strlen(model) + 1];
+        strcpy_s(this->model, strlen(model) + 1, model);
+        this->nrLocuri = nrLocuri;
+        this->putereMotor = putereMotor;
+        this->electric = electric;
+        nrMasini++;
+    }
+    Masina(const Masina& m) : anFabricatie(m.anFabricatie) {
+        this->model = new char[strlen(m.model) + 1];
+        strcpy_s(this->model, strlen(m.model) + 1, m.model);
+        this->nrLocuri = m.nrLocuri;
+        this->putereMotor =m. putereMotor;
+        this->electric = m.electric;
+       
+
+
+    }
+
+    ~Masina() {
+        if (model != NULL) {
+            delete[] this->model;
+        }
+
+    }
+    Masina& operator=(const Masina& m) {
+        if (this != &m) {
+            if (model != NULL) {
+                delete[] this->model;
+            }
+            this->model = new char[strlen(m.model) + 1];
+            strcpy_s(this->model, strlen(m.model) + 1, m.model);
+            this->nrLocuri = m.nrLocuri;
+            this->putereMotor = m.putereMotor;
+            this->electric = m.electric;
+
+
+        }
+
+        return *this;
+    }
+
+    friend ostream& operator <<(ostream& out , const Masina & m) {
+        out << "Model:" << m.model
+            << ",Numar locuri:" << m.nrLocuri
+            << ",Putere motor" << m.putereMotor
+            << ",Electric:" << m.electric
+            << ",An fabricatie:" << m.anFabricatie;
+    
+        return out;
+    }
+
+   
+
+    bool operator !=(const Masina& m) {
+        return this->nrLocuri != m.nrLocuri;
+    }
+
+    Masina& operator +=(float val) {
+        this->putereMotor += val;
+        return *this;
+    }
+
+
+
+    static int getNrMasini() {
+        return nrMasini;
+    }
+
+    void afiseaza() {
+        cout << "Model: " << this->model << ", Nr locuri: " << this->nrLocuri
+            << ", Putere motor: " << this->putereMotor << " CP"
+            << ", Electric: " << (this->electric ? "Da" : "Nu")
+            << ", An fabricatie: " << this->anFabricatie << endl;
+    }
+    void setModel(const char* model) {
+        delete[] this->model;
+        this->model = new char[strlen(model) + 1];
+        strcpy_s(this->model, strlen(model) + 1, model);
+    }
+
+    void setNrLocuri(int nrLocuri) {
+        this->nrLocuri = nrLocuri;
+    }
+
+    void setPutereMotor(float putere) {
+        this->putereMotor = putere;
+    }
+
+    void setElectric(bool electric) {
+        this->electric = electric;
+    }
+
+
+    char* getModel() {
+        return this->model;
+    }
+
+    int getAnFabricatie() {
+        return this->anFabricatie;
+    }
+
+    float getPutereMotor() {
+        return this->putereMotor;
+    }
+
+    bool getElectric() {
+        return this->electric;
+    }
+    int getNrLocuri() {
+        return this->nrLocuri;
+    }
+
+    friend float costLocuri(const Masina& m);
+    
+};
+int Masina::nrMasini = 0;
+float costLocuri(const Masina& m) {
+    return m.nrLocuri * 50;
+}
+
+class Motocicleta {
+private:
+    char* marca;
+    int anFabricatie;
+    bool sport;
+    const int nrRoti;
+    static int totalMotociclete;
+
+public:
+
+    Motocicleta() :nrRoti(2) {
+        this->marca = new char[strlen("Mercedes") + 1];
+        strcpy_s(this->marca, strlen("Mercedes") + 1, "Mercedes");
+        this->anFabricatie = 0;
+        this->sport = false;
+        totalMotociclete++;
+    }
+
+
+    Motocicleta(const char* marca, int anFabricatie, bool sport, int roti) :nrRoti(roti) {
+        this->marca = new char[strlen(marca) + 1];
+        strcpy_s(this->marca, strlen(marca) + 1, marca);
+        this->anFabricatie = anFabricatie;
+        this->sport = sport;
+        totalMotociclete++;
+    }
+    Motocicleta(const Motocicleta& mo) :nrRoti(mo.nrRoti) {
+        this->marca = new char[strlen(mo.marca) + 1];
+        strcpy_s(this->marca, strlen(mo.marca) + 1, mo.marca);
+        this->anFabricatie = mo.anFabricatie;
+        this->sport = mo.sport;
+
+    }
+
+    ~Motocicleta() {
+        if (marca != NULL) {
+            delete[] this->marca;
+        }
+
+    }
+
+
+    Motocicleta operator=(const Motocicleta& mo) {
+        if (this != &mo) {
+            if (marca != NULL) {
+                delete[] this->marca;
+            }
+            this->marca = new char[strlen(mo.marca) + 1];
+            strcpy_s(this->marca, strlen(mo.marca) + 1, mo.marca);
+            this->anFabricatie = mo.anFabricatie;
+            this->sport = mo.sport;
+
+        }
+        return *this;
+    }
+
+
+    friend ostream& operator<<(ostream& out, const Motocicleta& mo) {
+        out << "Marca:" << mo.marca 
+            << ",An fabricare:" << mo.anFabricatie
+            << ",Sport:" << mo.sport
+            << "'Numar roti:" << mo.nrRoti;
+        return out;
+    }
+    
+    
+    Motocicleta& operator++() {
+        this->anFabricatie=anFabricatie++;
+        return *this;
+    }
+    
+    Motocicleta operator++(int) {
+        Motocicleta copie = *this;
+        anFabricatie = ++anFabricatie;
+        return copie;
+    }
+    
+
+    static int getTotalMotociclete() {
+        return totalMotociclete;
+    }
+
+
+    void afiseaza()  {
+        cout << "Motocicleta marca: " << this->marca << ", An fabricatie: " << this->anFabricatie
+            << ", Sport: " << (this->sport ? "Da" : "Nu")
+            << ", Numar roti: " << this->nrRoti << endl;
+    }
+    void setMarca(const char* marca) {
+        delete[] this->marca;
+        this->marca = new char[strlen(marca) + 1];
+        strcpy_s(this->marca, strlen(marca) + 1, marca);
+    }
+
+    void setAnFabricatie(int an) {
+        this->anFabricatie = an;
+    }
+
+    void setSport(bool sport) {
+        this->sport = sport;
+    }
+
+
+     char* getMarca() {
+        return this->marca;
+    }
+
+    int getAnFabricatie() {
+        return this->anFabricatie;
+    }
+
+    bool getSport() {
+        return this->sport;
+    }
+   
+};
+
+int Motocicleta::totalMotociclete = 0;
+
+
+class Camion {
+private:
+    char* marca;
+    int anFabricatie;
+    float greutateMaxima;
+    bool diesel;
+    const int nrSerie;
+    static int totalCamioane;
+
+public:
+
+    Camion() :nrSerie(6213) {
+        this->marca = new char[strlen("Nissan") + 1];
+        strcpy_s(this->marca, strlen("Nissan") + 1, "Nissan");
+        this->anFabricatie = 0;
+        this->greutateMaxima = 0.0;
+        this->diesel = false;
+        totalCamioane++;
+    }
+
+
+    Camion(const char* marca, int anFabricatie, float greutateMaxima, bool diesel, int serie) :nrSerie(serie) {
+        this->marca = new char[strlen(marca) + 1];
+        strcpy_s(this->marca, strlen(marca) + 1, marca);
+        this->anFabricatie = anFabricatie;
+        this->greutateMaxima = greutateMaxima;
+        this->diesel = diesel;
+        totalCamioane++;
+    }
+
+    Camion(const Camion& c) :nrSerie(c.nrSerie) {
+        this->marca = new char[strlen(c.marca) + 1];
+        strcpy_s(this->marca, strlen(c.marca) + 1, c.marca);
+        this->anFabricatie = c.anFabricatie;
+        this->greutateMaxima = c.greutateMaxima;
+        this->diesel = c.diesel;
+
+
+    }
+    ~Camion() {
+        if (marca != NULL) {
+            delete[] this->marca;
+        }
+
+    }
+
+    Camion operator=(const Camion& c) {
+        if (this != &c) {
+            if (marca != NULL) {
+                delete[] this->marca;
+            }
+            this->marca = new char[strlen(c.marca) + 1];
+            strcpy_s(this->marca, strlen(c.marca) + 1, c.marca);
+            this->anFabricatie = c.anFabricatie;
+            this->greutateMaxima = c.greutateMaxima;
+            this->diesel = c.diesel;
+
+        }
+        return *this;
+    }
+    friend ostream& operator<<(ostream& out, const Camion& c) {
+        out << "Marca : " << c.marca
+            << " , An fabricatie : " << c.anFabricatie
+            << " , Greutatea maxima : " << c.greutateMaxima
+            << " ,Disel : " << c.diesel
+            << " , Numar serie : " << c.nrSerie;
+
+            return out;
+    }
+    
+    bool operator>(const Camion& c) {
+        return anFabricatie > c.anFabricatie;
+    }
+    //
+    float operator()(float valoareInKg) {
+        return this->greutateMaxima *  valoareInKg;
+    }
+
+
+
+
+
+    static int getTotalCamioane() {
+        return totalCamioane;
+    }
+
+    void afiseaza() {
+        cout << "Camion marca: " << this->marca << ", An fabricatie: " << this->anFabricatie
+            << ", Greutate maxima: " << this->greutateMaxima << " tone"
+            << ", Diesel: " << (this->diesel ? "Da" : "Nu")
+            << ", Numar serie: " << this->nrSerie << endl;
+    }
+
+    void setMarca(const char* marca) {
+        delete[] this->marca;
+        this->marca = new char[strlen(marca) + 1];
+        strcpy_s(this->marca, strlen(marca) + 1, marca);
+    }
+
+    void setAnFabricatie(int an) {
+        this->anFabricatie = an;
+    }
+
+    void setGreutateMaxima(float greutate) {
+        this->greutateMaxima = greutate;
+    }
+
+    void setDiesel(bool diesel) {
+        this->diesel = diesel;
+    }
+
+
+     char* getMarca() {
+        return this->marca;
+    }
+
+    int getAnFabricatie() {
+        return this->anFabricatie;
+    }
+
+    float getGreutateMaxima() {
+        return this->greutateMaxima;
+    }
+
+    bool getDiesel() {
+        return this->diesel;
+    }
+    
+    int getNrSerie() {
+        return this->nrSerie;
+    }
+    friend float pretTona(const Camion& c);
+};
+
+int Camion::totalCamioane = 0;
+float pretTona(const Camion& c) {
+    return c.greutateMaxima * 130;
+}
+
+void main() {
+    // clasa Masina
+    Masina masina1("Tesla", 5, 400.0, true, 2022);
+    Masina masina2("Audi", 4, 300.0, false, 2021);
+    masina1.afiseaza();
+    cout << endl;
+    masina2.afiseaza();
+    cout << "Numar total masini: " << Masina::getNrMasini() << endl;
+    cout << endl << endl;
+    cout << "Marca: " << masina1.getModel() << endl;
+    cout << "An fabricatie: " << masina1.getAnFabricatie() << endl;
+    cout << "Putere motor: " << masina1.getPutereMotor() << " CP" << endl;
+    cout << "Electric: " << (masina1.getElectric() ? "Da" : "Nu") << endl;
+    cout << "Numar locuri: " << masina1.getNrLocuri() << endl;
+
+    cout << endl;
+    masina1.setModel("Ferrari");
+    masina1.setNrLocuri(5);
+    masina1.setPutereMotor(500.0);
+    masina1.setElectric(false);
+    cout << endl;
+
+    Masina m1 = masina2;
+    m1.afiseaza();
+    cout << endl;
+    cout << endl;
+
+    cout << "Marca: " << masina1.getModel() << endl;
+    cout << "An fabricatie: " << masina1.getAnFabricatie() << endl;
+    cout << "Putere motor: " << masina1.getPutereMotor() << " CP" << endl;
+    cout << "Electric: " << (masina1.getElectric() ? "Da" : "Nu") << endl;
+    cout << "Numar locuri: " << masina1.getNrLocuri() << endl;
+
+    cout << "Pretul locurilor este de: " << costLocuri(masina1) << " lei." << endl;
+    cout << endl;
+    cout << endl;
+
+    cout << "Operatorii clasei Masina: " << endl;
+    cout << endl;
+    m1 = masina1;
+    cout << m1 << endl;
+    cout << endl;
+    cout << "masina2 are numarul de locuri diferit decat masina1 : " << ((masina2 != masina1) ? "Da" : "Nu") << endl;
+    cout << endl;
+    masina1 += 134;
+    cout << masina1 << endl;
+
+    cout << endl << "========================================================" << endl;
+    //  clasa Motocicleta
+    Motocicleta motocicleta1("BMW", 2020, true, 2);
+    Motocicleta motocicleta2("Yamaha", 2017, false, 2);
+    motocicleta1.afiseaza();
+    cout << endl;
+    motocicleta2.afiseaza();
+    cout << "Numar total motociclete: " << Motocicleta::getTotalMotociclete() << endl;
+    cout << endl << endl;
+    cout << "Marca: " << motocicleta1.getMarca() << endl;
+    cout << "An fabricatie: " << motocicleta1.getAnFabricatie() << endl;
+    cout << "Sport: " << (motocicleta1.getSport() ? "Da" : "Nu") << endl;
+  
+    cout << endl;
+    motocicleta1.setMarca("Toyota");
+    motocicleta1.setAnFabricatie(2021);
+    motocicleta1.setSport(false);
+
+
+    cout << "Marca: " << motocicleta1.getMarca() << endl;
+    cout << "An fabricatie: " << motocicleta1.getAnFabricatie() << endl;
+    cout << "Sport: " << (motocicleta1.getSport() ? "Da" : "Nu") << endl;
+    cout << endl;
+    cout << endl;
+
+    Motocicleta mo1 = motocicleta1;
+    mo1.afiseaza();
+    cout << endl;
+    cout << endl;
+
+
+    cout << "Operatorii clasei Motocileta: " << endl;
+    cout << endl;
+    //cout << motocicleta1;
+     mo1 = motocicleta2 ;
+     cout << mo1 << endl;
+     cout << endl;
+
+     Motocicleta mopost = motocicleta1++;
+     cout << mopost; 
+     cout << endl;
+     cout << motocicleta1;
+     cout << endl;
+     cout << endl;
+
+     cout << motocicleta2 << endl;
+     Motocicleta mopre = ++motocicleta2;
+     cout << mopre << endl;
+     cout << endl;
+     cout << motocicleta2 << endl;
+     cout << endl;
+
+
+
+    cout << endl << "========================================================" << endl;
+    //  clasa Camion
+
+    Camion camion1("Volvo", 2020, 14.5, true, 6211);
+    Camion camion2("Skoda", 2019, 10.5, false, 6222);
+    camion1.afiseaza();
+    cout << endl;
+    camion2.afiseaza();
+    cout << "Numar total camioane: " << Camion::getTotalCamioane() << endl;
+
+    cout << endl << endl;
+    cout << "Marca: " << camion1.getMarca() << endl;
+    cout << "An fabricatie: " << camion1.getAnFabricatie() << endl;
+    cout << "Greutate maxima: " << camion1.getGreutateMaxima() << " tone" << endl;
+    cout << "Diesel: " << (camion1.getDiesel() ? "Da" : "Nu") << endl;
+    cout << "Serie: " << camion1.getNrSerie()<< endl;
+    cout << endl;
+
+    camion1.setMarca("Sedan");
+    camion1.setAnFabricatie(2022);
+    camion1.setGreutateMaxima(12.0);
+    camion1.setDiesel(false);
+
+
+    cout << "Marca: " << camion1.getMarca() << endl;
+    cout << "An fabricatie: " << camion1.getAnFabricatie() << endl;
+    cout << "Greutate maxima: " << camion1.getGreutateMaxima() << " tone" << endl;
+    cout << "Diesel: " << (camion1.getDiesel() ? "Da" : "Nu") << endl;
+
+    cout << "Pretul pentru greutatea camionului este de: " << pretTona(camion1) << " lei." << endl;
+
+    cout << endl;
+    cout << endl;
+
+    Camion c1 = camion1;
+    c1.afiseaza();
+    Camion c2 = camion2;
+    c2.afiseaza();
+    cout << endl;
+    cout << endl;
+    cout << "Operatorii clasei Camion: " << endl;
+    cout << endl;
+    cout << c2 << endl;
+    c2 = camion1;
+    cout << c2 << endl;
+    cout << endl;
+    cout << endl;
+    cout << "Camionul2 este mai nou decat Camionul 1?" << ((camion2 > camion1) ? " DA " : " NU ") << endl;
+    cout << camion2 << endl;
+    cout << camion1 << endl;
+    cout << endl;
+    cout << endl;
+    cout << c1 << endl;
+    cout << endl;
+    cout << c1(1000) << endl;
+
+
+}
